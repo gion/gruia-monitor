@@ -26,7 +26,7 @@ function deploy() {
   branch_name=${branch_name:-HEAD}
 
 
-  echo "\x1B[43starting to deploy"
+  echo "\x1B[92starting to deploy"
 
   # checkout to a new feature branch
   git checkout -b $new_branch_name
@@ -35,13 +35,13 @@ function deploy() {
   git add build
 
   # commit the changes
-  git commit -m ""
+  git commit -m "$message"
 
   # push the branch upstream
   git push -u
 
   # make and open the pull request
-  hub pull-request -o -b gh-pages -m $message
+  hub pull-request -o -b gh-pages -m "$message"
 
   # checkout to the previous branch
   git checkout $branch_name

@@ -5,12 +5,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Gruia Monitor</title>
+  <link href="./main.css" rel="stylesheet" />
   <script defer src="./bundle.js"></script>
   </style>
 </head>
 
 <body>
-  <h1>Howdy!</h1>
+  <section class="container">
+    <a name="guest" class="card">
+      <div class="guest">
+        <h1>Howdy stranger!</h1>
+        <button onclick="app.login()">Login with google!</button>
+      </div>
+    </a>
+    <a name="account" class="card">
+      <div class="user">
+        <h1>Howdy <span class="user__name"></span>!</h1>
+        <button onclick="app.logout()">Logout</button>
+      </div>
+    </a>
+  </section>
 </body>
 
 </html>
