@@ -1,9 +1,9 @@
-var outputPath = process.env.NODE_ENV === 'production' ? 'build' : 'public';
+var outputPath = process.env.NODE_ENV === 'production' ? './build' : '.';
 
 module.exports = {
     entry: './src/index.js',
     output: {
-        filename: './' + outputPath + '/bundle.js'
+        filename: outputPath + '/bundle.js'
     },
     devtool: 'source-map',
     module: {

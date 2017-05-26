@@ -20,7 +20,7 @@
   },
   "scripts": {
     "postinstall": "echo 'installing github command line...'; brew install hub",
-    "serve": "node_modules/.bin/webpack-dev-server --open --content-base public/",
+    "serve": "export NODE_ENV=develop; node_modules/.bin/webpack-dev-server --open --content-base public/",
     "build:dev": "webpack --progress --profile --colors",
     "build:dist": "source helpers.sh; buildProduction",
     "deploy": "source helpers.sh; deploy",
