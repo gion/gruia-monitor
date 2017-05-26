@@ -19,6 +19,7 @@
     "webpack-dev-server": "^2.4.5"
   },
   "scripts": {
+    "postinstall": "echo 'installing github command line...'; brew install hub",
     "serve": "node_modules/.bin/webpack-dev-server --open --content-base public/",
     "build": "webpack",
     "deploy": "source helpers.sh; deploy",
