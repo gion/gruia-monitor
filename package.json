@@ -1,0 +1,43 @@
+{
+  "name": "gruia-monitor",
+  "version": "1.0.0",
+  "description": "A baby monitor prototype app build using webrtc and firebase",
+  "main": "public/bundle.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "webpack-dev-server": "^2.4.5"
+  },
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "webpack": "^2.6.1",
+    "webpack-dev-server": "^2.4.5"
+  },
+  "scripts": {
+    "serve": "node_modules/.bin/webpack-dev-server --open --content-base public/",
+    "build": "webpack",
+    "deploy": "source helpers.sh; deploy",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gion/gruia-monitor.git"
+  },
+  "keywords": [
+    "baby",
+    "monitor",
+    "webrtc",
+    "firebase"
+  ],
+  "author": "Gion <bogdan.gradinariu@gmail.com> (http://dana-si-gion.ro/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gion/gruia-monitor/issues"
+  },
+  "homepage": "https://github.com/gion/gruia-monitor#readme"
+}

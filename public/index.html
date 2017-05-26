@@ -4,22 +4,39 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Welcome to Firebase Hosting</title>
-
-    <!-- update the version number as needed -->
+<!--
     <script defer src="/__/firebase/4.0.0/firebase-app.js"></script>
-    <!-- include only the Firebase features as you need -->
     <script defer src="/__/firebase/4.0.0/firebase-auth.js"></script>
     <script defer src="/__/firebase/4.0.0/firebase-database.js"></script>
     <script defer src="/__/firebase/4.0.0/firebase-messaging.js"></script>
     <script defer src="/__/firebase/4.0.0/firebase-storage.js"></script>
-    <!-- initialize the SDK after all desired features are loaded -->
+
     <script defer src="/__/firebase/init.js"></script>
-    <script defer src="app.js"></script>
+
+    <script defer src="./app.js"></script>
+    -->
+    <script defer src="./bundle.js"></script>
+
+    <style>
+    video {
+      background-color: #ddd;
+      border-radius: 7px;
+      margin: 10px 0px 0px 10px;
+      width: 320px;
+      height: 240px;
+    }
+    button {
+      margin: 5px 0px 0px 10px !important;
+      width: 654px;
+    }
+</style>
   </head>
   <body>
-
-
-    <script>
+    <video id="yourVideo" autoplay muted></video>
+    <video id="friendsVideo" autoplay></video>
+    <br>
+    <button onclick="showFriendsFace()" type="button" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span> Call</button>
+    <!--<script>
       document.addEventListener('DOMContentLoaded', function() {
         // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
         // // The Firebase SDK is initialized and available here!
@@ -37,7 +54,9 @@
           console.error(e);
           document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
         }
-      });
-    </script>
+
+        showMyFace();
+    });
+    </script>-->
   </body>
 </html>
