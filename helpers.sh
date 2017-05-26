@@ -4,7 +4,7 @@ function buildProduction() {
   # clean build folder
   rm -rf ./build
   mkdir build
-  cp public/index.html build/index.html
+  cp -R public/* build/
   export NODE_ENV=production
   webpack --progress --profile --colors
 }

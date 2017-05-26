@@ -1,5 +1,3 @@
-import { auth } from './firebaseApp.js'
+import app from './app'
 
-auth.onAuthStateChanged(user => console.log('user changed', user));
-
-window.auth = auth;
+window.app = app

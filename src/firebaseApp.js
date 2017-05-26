@@ -1,7 +1,8 @@
-import * as constants from './constants.js';
-import * as firebase from 'firebase';
-debugger;
-firebase.initializeApp(constants.firebaseConfig);
+import * as constants from './constants.js'
+import * as firebase from 'firebase'
 
-export const auth = firebase.auth();
-export const database = firebase.database();
+firebase.initializeApp(constants.firebaseConfig)
+
+export const googleProvider = new firebase.auth.GoogleAuthProvider()
+export const auth = firebase.auth()
+export const database = firebase.database()
