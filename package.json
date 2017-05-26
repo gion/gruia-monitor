@@ -21,7 +21,8 @@
   "scripts": {
     "postinstall": "echo 'installing github command line...'; brew install hub",
     "serve": "node_modules/.bin/webpack-dev-server --open --content-base public/",
-    "build": "webpack",
+    "build:dev": "webpack --progress --profile --colors",
+    "build:dist": "source helpers.sh; buildProduction",
     "deploy": "source helpers.sh; deploy",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
