@@ -2,7 +2,6 @@ import { auth, googleProvider } from './firebaseApp.js'
 import * as firebase from 'firebase'
 import * as helpers from './helpers'
 
-
 class App {
   constructor({auth, googleProvider, firebase}) {
     this.auth = auth
