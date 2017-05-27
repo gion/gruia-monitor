@@ -1,9 +1,11 @@
-var outputPath = process.env.NODE_ENV === 'production' ? 'build' : 'public';
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var isProduction = process.env.NODE_ENV === 'production';
+var outputPath = isProduction ? './build' : '.';
 
 module.exports = {
     entry: './src/index.js',
     output: {
-        filename: './' + outputPath + '/bundle.js'
+        filename: outputPath + '/bundle.js'
     },
     devtool: 'source-map',
     module: {
@@ -18,7 +20,17 @@ module.exports = {
                         'stage-0'
                     ]
                 }
+            },
+            {
+                test: /\.scss$/,
+                loader: ExtractTextPlugin.extract('css-loader!sass-loader')
             }
         ]
-    }
+    },
+    plugins: [
+        new ExtractTextPlugin({
+            filename: (isProduction ? './build' : '.') + '/style.css',
+            allChunks: true
+        })
+    ]
 };

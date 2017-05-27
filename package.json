@@ -15,12 +15,17 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
+    "css-loader": "^0.28.3",
+    "extract-text-webpack-plugin": "^2.1.0",
+    "node-sass": "^4.5.3",
+    "sass-loader": "^6.0.5",
+    "style-loader": "^0.18.1",
     "webpack": "^2.6.1",
     "webpack-dev-server": "^2.4.5"
   },
   "scripts": {
     "postinstall": "echo 'installing github command line...'; brew install hub",
-    "serve": "node_modules/.bin/webpack-dev-server --open --content-base public/",
+    "serve": "export NODE_ENV=develop; node_modules/.bin/webpack-dev-server --open --content-base public/",
     "build:dev": "webpack --progress --profile --colors",
     "build:dist": "source helpers.sh; buildProduction",
     "deploy": "source helpers.sh; deploy",

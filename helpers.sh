@@ -4,7 +4,7 @@ function buildProduction() {
   # clean build folder
   rm -rf ./build
   mkdir build
-  cp public/index.html build/index.html
+  cp -R public/* build/
   export NODE_ENV=production
   webpack --progress --profile --colors
 }
@@ -35,13 +35,13 @@ function deploy() {
   git add build
 
   # commit the changes
-  git commit -m ""
+  git commit -m "$message"
 
   # push the branch upstream
   git push -u
 
   # make and open the pull request
-  hub pull-request -o -b gh-pages -m $message
+  hub pull-request -o -b gh-pages -m "$message"
 
   # checkout to the previous branch
   git checkout $branch_name
