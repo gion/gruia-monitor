@@ -9,6 +9,11 @@
 
 body {
   background: url("https://www.toptal.com/designers/subtlepatterns/patterns/sports.png");
+  transition: background 300ms 60ms ease;
+
+  &[motion] {
+
+  }
 }
 
 .container {
@@ -47,4 +52,9 @@ body {
   pointer-events: all;
   max-height: 999px;
   /*order: 0;*/
+}
+
+.video {
+  width: 100%;
+  height: auto;
 }
