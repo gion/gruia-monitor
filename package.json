@@ -7,7 +7,10 @@
     "test": "test"
   },
   "dependencies": {
-    "webpack-dev-server": "^2.4.5"
+    "decibel-meter": "^2.0.0",
+    "diff-cam-engine": "github:gion/diff-cam-engine",
+    "moment": "^2.18.1",
+    "sound-detection": "^0.1.1"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",

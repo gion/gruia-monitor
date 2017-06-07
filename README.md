@@ -1,7 +1,7 @@
 # gruia-monitor
 A baby monitor prototype app build using webrtc and firebase
 
-## test it online at [gion.github.io/gruia-monitor/](gion.github.io/gruia-monitor/)
+## test it online at [https://gion.github.io/gruia-monitor/](gion.github.io/gruia-monitor/)
 
 ## install
   - clone the repo (`git clone git@github.com:gion/gruia-monitor.git`)
