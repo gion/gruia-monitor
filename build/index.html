@@ -7,23 +7,37 @@
   <title>Gruia Monitor</title>
   <link href="./style.css" rel="stylesheet" />
   <script defer src="./bundle.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   </style>
 </head>
 
 <body>
   <section class="container">
+
     <a name="guest" class="card">
       <div class="guest">
         <h1>Howdy stranger!</h1>
         <button onclick="app.login()">Login with google!</button>
       </div>
     </a>
+
     <a name="account" class="card">
       <div class="user">
         <h1>Howdy <span class="user__name"></span>!</h1>
         <button onclick="app.logout()">Logout</button>
       </div>
     </a>
+
+    <a name="listen" class="card">
+      <div>
+        <h1>Move a little to test motion detection</h1>
+        <video class="video" autoplay></video>
+        <canvas class="canvas"></canvas>
+        <div class="chart"></div>
+      </div>
+      <button onclick="app.logout()">Logout</button>
+    </a>
+
   </section>
 </body>
 
