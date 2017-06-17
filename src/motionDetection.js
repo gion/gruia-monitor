@@ -136,10 +136,14 @@ function diffCamEngineFactory() {
 		requestWebcam();
 	}
 
-	function requestWebcam() {
+	function requestWebcam(frontCamera) {
 		var constraints = {
 			audio: false,
-			video: { width: captureWidth, height: captureHeight }
+			video: {
+				width: captureWidth,
+				height: captureHeight,
+				facingMode: frontCamera ? 'user' : 'environment'
+			}
 		};
 
 		navigator.mediaDevices.getUserMedia(constraints)
