@@ -55,6 +55,8 @@ body {
 
 .card:target,
 [route^='baby'] [name='baby'],
+[route^='baby'] [name='chart'],
+[route^='parent'] [name='chart'],
 [route^='parent'] [name='parent'] {
   margin: 20px;
   padding: 20px;
@@ -67,4 +69,8 @@ body {
 .video, .canvas {
   width: 100%;
   height: auto;
+}
+
+.chart {
+  min-height: 240px;
 }
