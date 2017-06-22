@@ -7,7 +7,18 @@
   --color5: #31517b; }
 
 body {
-  background: url("https://www.toptal.com/designers/subtlepatterns/patterns/sports.png"); }
+  background: url("https://www.toptal.com/designers/subtlepatterns/patterns/sports.png");
+  transition: background 300ms 60ms ease; }
+  body:after {
+    content: "Motion: " attr(motion) "% | Noise: " attr(noise) "%";
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    padding: 10px;
+    box-shadow: 1px 1px 4px #000;
+    display: inline-block;
+    background: #fff;
+    opacity: 0.5; }
 
 .container {
   display: block;
@@ -30,12 +41,21 @@ body {
   max-height: 0;
   /*order: 1;*/ }
 
-.card:target {
+.card:target,
+.card.active,
+[route^='baby'] [name='baby'],
+[route^='baby'] [name='chart'],
+[route^='parent'] [name='parent'],
+[route^='parent'] [name='chart'] {
   margin: 20px;
   padding: 20px;
   opacity: 1;
   pointer-events: all;
   max-height: 999px;
   /*order: 0;*/ }
+
+.video, .canvas {
+  width: 100%;
+  height: auto; }
 
 /*# sourceMappingURL=style.css.map*/
