@@ -5,6 +5,8 @@ import moment from 'moment'
 import { MotionDetection } from './motionDetection'
 // import SoundDetection from 'sound-detection'
 import DecibelMeter from 'decibel-meter'
+import throttle from 'lodash.throttle'
+
 // import * as DiffCamEngine from 'diff-cam-engine'
 
 class App {
@@ -15,10 +17,15 @@ class App {
     this.db = this.firebase.database()
 
     this.onRouteChange = this.onRouteChange.bind(this)
-    this.initChart = this.initChart.bind(this)
+    this.updateChart = this.updateChart.bind(this)
+    this.updateChartData = this.updateChartData.bind(this)
+    this.update = throttle(this.update, 1000, true)
+    this.drawChart = throttle(this.drawChart, 1000)
 
     this._motions = []
+    this._motion = 0
     this._noises = []
+    this._noise = 0
 
     this.roomId = null
 
@@ -33,7 +40,8 @@ class App {
       this.roomId = roomRef.key
 
       roomRef.set({
-        enabled: true
+        enabled: true,
+        chartData: []
       })
 
       return roomRef
@@ -42,18 +50,15 @@ class App {
     return this.db.ref('rooms').child(this.roomId)
   }
 
+  get chartDataRef() {
+    return this.roomRef.child('chartData')
+  }
+
   get invitationLink() {
     return `${location.origin}/#/parent/${this.roomId}`
   }
 
   set noise(value) {
-
-    this._noises = this._noises || []
-    this._noises.push({
-      value: value,
-      timestamp: new Date
-    })
-
     this._noise = value
     this.update()
   }
@@ -63,13 +68,6 @@ class App {
   }
 
   set motion(value) {
-
-    this._motions = this._motions || []
-    this._motions.push({
-      value: value,
-      timestamp: new Date
-    })
-
     this._motion = value
     this.update()
   }
@@ -92,17 +90,27 @@ class App {
       });
   }
 
+  updateChartData(data) {
+    this.chartDataRef.push().set(data)
+  }
+
   update() {
-    let now = new Date()
+    // let now = new Date()
 
-    if (this.lastUpdate) {
-      if (now - this.lasUpdate < 1 * 1000) {
-        // wait a bit
-        return
-      }
-    }
+    this.updateChartData({
+      motion: this.motion,
+      noise: this.noise,
+      timestamp:  moment().format('hh:MM:ss')
+    })
 
-    this.lastUpdate = now
+    // if (this.lastUpdate) {
+    //   if (now - this.lasUpdate < 1 * 1000) {
+    //     // wait a bit
+    //     return
+    //   }
+    // }
+
+    // this.lastUpdate = now
 
     if (!this._maxMotionScore) {
       let canvas = document.querySelector('.canvas')
@@ -114,11 +122,11 @@ class App {
       this._maxNoiseScore = 255
     }
 
-    let motion = Math.round(this.motion / this._maxNoiseScore)
-    let noise = 100 * Math.round(this.noise / this._maxNoiseScore)
+    // let motion = Math.round(this.motion / this._maxMotionScore)
+    // let noise = 100 * Math.round(this.noise / this._maxNoiseScore)
 
-    document.body.setAttribute('motion', motion)
-    document.body.setAttribute('noise', noise)
+    // document.body.setAttribute('motion', motion)
+    // document.body.setAttribute('noise', noise)
   }
 
   addEventListeners() {
@@ -132,6 +140,16 @@ class App {
     })
 
     helpers.onRouteChange(this.onRouteChange)
+
+    let chartContainer = document.querySelector('[name=chart]')
+
+    window.addEventListener('resize', () => {
+      if (!this.chart || !this.chartOptions) {
+        return
+      }
+      this.chartOptions.width = parseInt(getComputedStyle(chartContainer).width)
+      this.chart.draw(this.chartData, this.chartOptions)
+    }, false)
   }
 
   login() {
@@ -198,6 +216,20 @@ class App {
     this.route = newRoute
     document.body.setAttribute('route', this.route.split('/')[0])
 
+    if (newRoute === 'account') {
+      if (this.soundDetection) {
+        this.soundDetection.stopListening()
+      }
+
+      if(this.motionDetection) {
+        this.motionDetection.stop()
+      }
+
+      this.stopListeningForAnswers()
+      this.stopListeningForCandidates()
+      this.stopListeningForChartData()
+    }
+
     if (newRoute.indexOf('baby') === 0) {
       if (this.soundDetection) {
         this.soundDetection.listen()
@@ -211,17 +243,11 @@ class App {
 
       this.listenForAnswer(answer => console.log('answer here', answer))
 
+      this.initChart()
+      this.listenForChartData()
+
     } else {
-      if (this.soundDetection) {
-        this.soundDetection.stopListening()
-      }
 
-      if(this.motionDetection) {
-        this.motionDetection.stop()
-      }
-
-      this.stopListeningForAnswers()
-      this.stopListeningForCandidates()
     }
 
     if (newRoute === 'watch') {
@@ -281,8 +307,11 @@ class App {
       let roomId = newRoute.replace(/^.*\//, '')
 
       this.parent(roomId)
+      this.initChart()
+      this.listenForChartData()
+
     } else {
-      this.stopListeningForAnswers()
+
     }
   }
 
@@ -371,6 +400,10 @@ class App {
     })
   }
 
+  listenForChartData() {
+    this.chartDataRef.on('child_added', data => this.updateChart(data.val()))
+  }
+
   listenForCandidate(callback) {
     console.log('listenForCandidate')
 
@@ -419,6 +452,10 @@ class App {
     })
   }
 
+  stopListeningForChartData() {
+    this.chartDataRef.off('child_added')
+  }
+
   stopListeningForCandidates() {
     this.roomRef.child('candidate').off()
   }
@@ -452,49 +489,68 @@ class App {
   }
 
   initChart() {
+    let chartContainer = document.querySelector('[name=chart]')
+
     this.chart = new google.visualization.LineChart(document.querySelector('.chart'));
 
-    this.charOptions = {
-      width: 400,
+    this.chartOptions = {
+      width: parseInt(getComputedStyle(chartContainer).width),
       height: 240,
-      vAxis: {minValue:0, maxValue:100},
+      vAxis: {
+        minValue: 0,
+        maxValue: 100
+      },
       animation: {
         duration: 1000,
         easing: 'in'
       }
-    };
+    }
 
-    this.chartData = new google.visualization.DataTable();
-    this.chartData.addColumn('number', 'x');
-    this.chartData.addColumn('number', 'y');
+    this.chartData = new google.visualization.DataTable()
+    this.chartData.addColumn('string', 'time')
+    this.chartData.addColumn('number', 'motion')
+    this.chartData.addColumn('number', 'noise')
 
-    // var button = document.getElementById('b1');
+    this.chartDataRef.once('value', data => {
+      let values = data.val()
+      if (!values) {
+        return
+      }
 
-    // button.onclick = function() {
-    //   if (data.getNumberOfRows() > 5) {
-    //     data.removeRow(Math.floor(Math.random() * data.getNumberOfRows()));
-    //   }
-    //   // Generating a random x, y pair and inserting it so rows are sorted.
-    //   var x = Math.floor(Math.random() * 1000);
-    //   var y = Math.floor(Math.random() * 100);
-    //   var where = 0;
-    //   while (where < data.getNumberOfRows() && parseInt(data.getValue(where, 0)) < x) {
-    //     where++;
-    //   }
-    //   data.insertRows(where, [[x.toString(), y]]);
-    //   drawChart();
-    // }
+      Object.values(values).map(value => [
+          value.timestamp,
+          value.motion / this._maxMotionScore,
+          value.noise / this._maxNoiseScore
+        ])
+        .forEach(data => this.chartData.addRow(data))
 
+      this.chart.draw(this.chartData, this.chartOptions);
+    })
+  }
+
+  updateChart(value) {
+
+    let v = [
+      value.timestamp,
+      value.motion,
+      value.noise
+    ]
+
+    console.log('update chart', v)
+
+    this.chartData.addRow(v)
+    this.drawChart()
   }
 
   drawChart() {
-    this._motions
-      .map(({timestamp, value}) => {
-        return [value, moment(timestamp).format('hh:MM:ss')]
-      })
-      .forEach(data => this.chartData.addRow(data));
+    const maxRows = 10
+    let rowCount = this.chartData.getNumberOfRows()
 
-    this.chart.draw(this.chartData, this.charOptions);
+    if (rowCount > maxRows) {
+      this.chartData.removeRows(0, rowCount > maxRows)
+    }
+
+    this.chart.draw(this.chartData, this.chartOptions);
   }
 
   // getUserMedia() {

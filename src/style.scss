@@ -54,8 +54,11 @@ body {
 }
 
 .card:target,
+.card.active,
 [route^='baby'] [name='baby'],
-[route^='parent'] [name='parent'] {
+[route^='baby'] [name='chart'],
+[route^='parent'] [name='parent'],
+[route^='parent'] [name='chart'] {
   margin: 20px;
   padding: 20px;
   opacity: 1;

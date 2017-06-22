@@ -5,6 +5,6 @@ import * as style from './style.scss'
 google.charts.load('current', {packages: ['corechart']})
 
 // Set a callback to run when the Google Visualization API is loaded.
-google.charts.setOnLoadCallback(app.initChart)
+// google.charts.setOnLoadCallback(app.initChart)
 
 window.app = app
