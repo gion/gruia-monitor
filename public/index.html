@@ -5,10 +5,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Gruia Monitor</title>
+
   <link href="./style.css" rel="stylesheet" />
+
   <script defer src="./bundle.js"></script>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  </style>
+  <script type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=594b8ab4da77780011ae50d5&product=sticky-share-buttons' async='async'></script>
 </head>
 
 <body>
@@ -24,17 +26,35 @@
     <a name="account" class="card">
       <div class="user">
         <h1>Howdy <span class="user__name"></span>!</h1>
+        <p>
+          <span>Connect this device as a "baby" with the follwing id</span>
+          <button onclick="app.baby()">Baby</button>
+        </p>
+        or
+        <p>
+          <span>Connect this device as a "parent" to the following room</span>
+          <input type="text" id="parent-id">
+          <button onclick="app.navigate('parent/' + document.getElementById('parent-id').value)">Parent</button>
+        </p>
         <button onclick="app.logout()">Logout</button>
       </div>
     </a>
 
-    <a name="listen" class="card">
+    <a name="baby" class="card">
       <div>
-        <h1>Move a little to test motion detection</h1>
+        <!--<p class="sharer" onclick="app.inviteParent()">
+          Share <a href="" target="_blank">this url</a> with a "parent" to monitor this baby
+        </p>-->
+        <div class="sharethis-inline-share-buttons" data-url="http://sharethis.com" data-title="Sharing is great!"></div>
         <video class="video" autoplay></video>
         <canvas class="canvas"></canvas>
         <div class="chart"></div>
       </div>
+      <button onclick="app.logout()">Logout</button>
+    </a>
+
+    <a name="parent" class="card">
+      <video class="parent-video" autoplay></video>
       <button onclick="app.logout()">Logout</button>
     </a>
 

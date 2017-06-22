@@ -53,7 +53,9 @@ body {
   // width: 100%;
 }
 
-.card:target {
+.card:target,
+[route^='baby'] [name='baby'],
+[route^='parent'] [name='parent'] {
   margin: 20px;
   padding: 20px;
   opacity: 1;
